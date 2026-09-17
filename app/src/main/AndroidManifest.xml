@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -31,11 +33,18 @@
             android:name=".ThirdActivity"
             android:exported="false" />
         <activity
-            android:name=".FourthActivity"
+            android:name=".CartActivity"
             android:exported="false" />
         <activity
-            android:name=".NvidiaActivity"
+            android:name=".GpsActivity"
             android:exported="false" />
+        <activity
+            android:name=".FourthActivity"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="SUA_CHAVE_API_AQUI" />
     </application>
 
 </manifest>

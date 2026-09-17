@@ -42,10 +42,10 @@
         android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintHorizontal_bias="0.062"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.913" />
+        app:layout_constraintVertical_bias="0.863" />
 
     <TextView
         android:id="@+id/textView6"
@@ -58,7 +58,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.899" />
+        app:layout_constraintVertical_bias="0.869" />
 
     <TextView
         android:id="@+id/textView3"
@@ -81,10 +81,10 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintHorizontal_bias="0.065"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.595" />
+        app:layout_constraintVertical_bias="0.576" />
 
     <TextView
         android:id="@+id/textView7"
@@ -109,10 +109,10 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.049"
+        app:layout_constraintHorizontal_bias="0.065"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.96" />
+        app:layout_constraintVertical_bias="0.899" />
 
     <TextView
         android:id="@+id/textView9"
@@ -123,10 +123,10 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.741"
+        app:layout_constraintHorizontal_bias="0.777"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.957" />
+        app:layout_constraintVertical_bias="0.899" />
 
     <ImageView
         android:id="@+id/imageView4"
@@ -158,10 +158,10 @@
         android:layout_height="125dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.098"
+        app:layout_constraintHorizontal_bias="0.043"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.773"
+        app:layout_constraintVertical_bias="0.735"
         app:srcCompat="@drawable/pg_osi_bk1222123" />
 
     <ImageView
@@ -173,7 +173,7 @@
         app:layout_constraintHorizontal_bias="0.937"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.771"
+        app:layout_constraintVertical_bias="0.738"
         app:srcCompat="@drawable/pch_lys_gy2_1" />
 
     <ImageView
@@ -186,7 +186,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.107"
-        app:srcCompat="@drawable/_7cf8a01b_f9f2_4ae4_b9f8_0eb56955b8eb" />
+        app:srcCompat="@drawable/_7cf8a01b_f9f2_4ae4_b9f8_0eb56955b8eb"
+        android:clickable="true"
+        android:focusable="true" />
 
     <ImageView
         android:id="@+id/imageView9"
@@ -211,5 +213,17 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.038"
         app:srcCompat="@drawable/captura_de_tela_2026_09_03_as_15_00_40" />
+
+    <Button
+        android:id="@+id/btnNvidia"
+        android:layout_width="109dp"
+        android:layout_height="39dp"
+        android:layout_margin="16dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#76B900"
+        android:text="NVIDIA Store"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

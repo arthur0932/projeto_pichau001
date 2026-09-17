@@ -9,6 +9,7 @@ activityKtx = "1.13.0"
 constraintlayout = "2.2.2"
 cardview = "1.0.0"
 glide = "4.16.0"
+playServicesMaps = "19.0.0"
 
 [libraries]
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -20,6 +21,7 @@ activity-ktx = { group = "androidx.activity", name = "activity-ktx", version.ref
 constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
 cardview = { group = "androidx.cardview", name = "cardview", version.ref = "cardview" }
 glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

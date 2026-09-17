@@ -23,5 +23,17 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        // Conectar a imagem da NVIDIA à Segunda Tela
+        findViewById(R.id.imageView8).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+            startActivity(intent);
+        });
+
+        // Conectar o botão NVIDIA Store à Segunda Tela
+        findViewById(R.id.btnNvidia).setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+            startActivity(intent);
+        });
     }
 }

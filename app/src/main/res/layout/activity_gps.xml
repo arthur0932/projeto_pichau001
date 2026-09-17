@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#2F2F2F"
+    tools:context=".GpsActivity">
+
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Localização para Entrega"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="32dp"
+        app:cardBackgroundColor="#454242"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewTitle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <TextView
+                android:id="@+id/textLatitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Latitude: --"
+                android:textColor="#BBBBBB"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textLongitude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Longitude: --"
+                android:textColor="#BBBBBB"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Status: Aguardando sinal..."
+                android:textColor="#76B900"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardMap"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginVertical="24dp"
+        app:cardBackgroundColor="#454242"
+        app:cardCornerRadius="16dp"
+        app:layout_constraintBottom_toTopOf="@id/btnGetLocation"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardLocation">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/btnGetLocation"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="24dp"
+        android:backgroundTint="#76B900"
+        android:text="OBTER MINHA LOCALIZAÇÃO"
+        android:textColor="#FFFFFF"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toTopOf="@id/btnFinish"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btnFinish"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#E91E63"
+        android:text="FINALIZAR PEDIDO"
+        android:textColor="#FFFFFF"
+        app:cornerRadius="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
