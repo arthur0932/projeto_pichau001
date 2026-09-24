@@ -7,26 +7,21 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+public class GpsActivity extends AppCompatActivity {
 
-public class GpsActivity extends AppCompatActivity implements OnMapReadyCallback {
-
-    private TextView textLatitude, textLongitude, textStatus;
+    private WebView webViewMapa;
     private LocationManager locationManager;
-    private GoogleMap mMap;
+
     private static final int PERMISSION_REQUEST_CODE = 100;
 
     @Override
@@ -34,100 +29,191 @@ public class GpsActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gps);
 
-        textLatitude = findViewById(R.id.textLatitude);
-        textLongitude = findViewById(R.id.textLongitude);
-        textStatus = findViewById(R.id.textStatus);
+        webViewMapa = findViewById(R.id.webViewMapa);
+
         Button btnGetLocation = findViewById(R.id.btnGetLocation);
         Button btnFinish = findViewById(R.id.btnFinish);
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(this);
-        }
+        // Configuração do WebView
+        WebSettings settings = webViewMapa.getSettings();
+        settings.setJavaScriptEnabled(true);
+        settings.setDomStorageEnabled(true);
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        webViewMapa.setWebViewClient(new WebViewClient());
 
+        // Abre o mapa.html
+        webViewMapa.loadUrl("file:///android_asset/mapa.html");
+
+        // Botão para pegar localização
         btnGetLocation.setOnClickListener(v -> checkPermissionAndGetLocation());
+
+        // Finalizar pedido
         btnFinish.setOnClickListener(v -> {
-            Toast.makeText(this, "Pedido finalizado! Obrigado pela compra.", Toast.LENGTH_LONG).show();
+            Toast.makeText(
+                    this,
+                    "Pedido finalizado! Obrigado pela compra.",
+                    Toast.LENGTH_LONG
+            ).show();
+
             finish();
         });
-    }
 
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        mMap = googleMap;
-        mMap.getUiSettings().setZoomControlsEnabled(true);
-        
-        // Habilitar o ponto azul de localização se tiver permissão
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-        }
+        locationManager =
+                (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }
 
     private void checkPermissionAndGetLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
+
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(
+                    this,
+                    new String[]{
+                            Manifest.permission.ACCESS_FINE_LOCATION,
+                            Manifest.permission.ACCESS_COARSE_LOCATION
+                    },
+                    PERMISSION_REQUEST_CODE
+            );
+
             return;
         }
 
-        if (mMap != null) {
-            mMap.setMyLocationEnabled(true);
-        }
-        
-        textStatus.setText("Status: Buscando...");
+        boolean gpsAtivo =
+                locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-        // Tentar obter a última localização conhecida imediatamente
-        Location lastKnown = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (lastKnown == null) {
-            lastKnown = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
-        }
-        
-        if (lastKnown != null) {
-            updateUI(lastKnown);
+        boolean redeAtiva =
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        if (!gpsAtivo && !redeAtiva) {
+            Toast.makeText(
+                    this,
+                    "Ative o GPS do celular.",
+                    Toast.LENGTH_LONG
+            ).show();
+
+            return;
         }
 
-        // Solicitar atualizações contínuas
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, locationListener);
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 5000, 5, locationListener);
+        // Tenta pegar localização conhecida imediatamente
+        Location ultimaLocalizacao = null;
+
+        if (gpsAtivo) {
+            ultimaLocalizacao =
+                    locationManager.getLastKnownLocation(
+                            LocationManager.GPS_PROVIDER
+                    );
+        }
+
+        if (ultimaLocalizacao == null && redeAtiva) {
+            ultimaLocalizacao =
+                    locationManager.getLastKnownLocation(
+                            LocationManager.NETWORK_PROVIDER
+                    );
+        }
+
+        if (ultimaLocalizacao != null) {
+            enviarLocalizacaoParaMapa(ultimaLocalizacao);
+        }
+
+        // Começa a acompanhar a localização
+        if (gpsAtivo) {
+            locationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,
+                    2000,
+                    2,
+                    locationListener
+            );
+        }
+
+        if (redeAtiva) {
+            locationManager.requestLocationUpdates(
+                    LocationManager.NETWORK_PROVIDER,
+                    2000,
+                    2,
+                    locationListener
+            );
+        }
     }
 
-    private final LocationListener locationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(@NonNull Location location) {
-            updateUI(location);
-        }
+    private final LocationListener locationListener =
+            new LocationListener() {
 
-        @Override
-        public void onProviderDisabled(@NonNull String provider) {
-            Toast.makeText(GpsActivity.this, "Por favor, ative o " + provider, Toast.LENGTH_SHORT).show();
-        }
-    };
+                @Override
+                public void onLocationChanged(@NonNull Location location) {
+                    enviarLocalizacaoParaMapa(location);
+                }
 
-    private void updateUI(Location location) {
-        double lat = location.getLatitude();
-        double lng = location.getLongitude();
-        textLatitude.setText("Latitude: " + lat);
-        textLongitude.setText("Longitude: " + lng);
-        textStatus.setText("Status: Localizado");
+                @Override
+                public void onProviderEnabled(@NonNull String provider) {
+                }
 
-        if (mMap != null) {
-            LatLng userPos = new LatLng(lat, lng);
-            mMap.clear();
-            mMap.addMarker(new MarkerOptions().position(userPos).title("Sua Localização"));
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(userPos, 16f));
+                @Override
+                public void onProviderDisabled(@NonNull String provider) {
+                }
+            };
+
+    private void enviarLocalizacaoParaMapa(Location location) {
+
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+
+        String javascript =
+                "updateLocation(" +
+                        latitude +
+                        "," +
+                        longitude +
+                        ");";
+
+        webViewMapa.evaluateJavascript(
+                "updateLocation(-23.6267, -46.6718);",
+                null
+        );
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            @NonNull String[] permissions,
+            @NonNull int[] grantResults
+    ) {
+        super.onRequestPermissionsResult(
+                requestCode,
+                permissions,
+                grantResults
+        );
+
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+
+            if (grantResults.length > 0 &&
+                    grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                checkPermissionAndGetLocation();
+
+            } else {
+
+                Toast.makeText(
+                        this,
+                        "Permissão de localização negada.",
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == PERMISSION_REQUEST_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                checkPermissionAndGetLocation();
-            } else {
-                Toast.makeText(this, "Permissão de GPS negada", Toast.LENGTH_SHORT).show();
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (locationManager != null) {
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED) {
+
+                locationManager.removeUpdates(locationListener);
             }
         }
     }

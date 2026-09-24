@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        html, body, #map { height: 100%; margin: 0; padding: 0; }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+    var map; // referência ao mapa
+    var marcadorUsuario; // marcador da localização do usuário
+    // Roda assim que a página carrega, criando o mapa
+    function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+    zoom: 2,
+    center: { lat: 0, lng: 0 }, // ponto genérico inicial
+    });
+    }
+    // Chamada pelo Java sempre que uma nova localização for capturada
+    function updateLocation(lat, lng) {
+    var origem = { lat: lat, lng: lng };
+    map.setCenter(origem); // recentraliza o mapa
+    map.setZoom(15);
+    if (marcadorUsuario) {
+    marcadorUsuario.setMap(null); // remove o marcador anterior
+    }
+    marcadorUsuario = new google.maps.Marker({
+    position: origem,
+    map: map,
+    title: "Você está aqui"
+    });
+    }
+</script>
+<script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqlWnu56oKfwq7y7eCqSdPov4EFTfTpxU&callback=initMap"
+        async defer></script>
+</body>
+</html>
